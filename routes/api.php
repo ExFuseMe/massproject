@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/request', [ApplicationController::class, "store"]);
 Route::get('/request', [ApplicationController::class, "index"]);
+// ->middleware("is_admin")
+Route::put('/request/{id}', [ApplicationController::class, "update"]);

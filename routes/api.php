@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/request', [ApplicationController::class, "store"]);
 Route::get('/request', [ApplicationController::class, "index"]);
-// ->middleware("is_admin")
-Route::put('/request/{id}', [ApplicationController::class, "update"]);
+//public route
+Route::post('/auth/login', [AuthController::class, 'login']);
+//protected route
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::put('/request/{id}', [ApplicationController::class, "update"])->middleware('restrictRole:admin');
+});

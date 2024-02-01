@@ -13,11 +13,16 @@ class EnsureIsAdmin
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        if(! $request->user() || ! $request->user()->role == "admin"){
-            abort(403, "You are not admin");
+
+        $user = $request->user();
+
+        if (! $user || ! in_array($user->role, $roles)) {
+            abort(403, 'Unauthorized');
         }
+
         return $next($request);
+
     }
 }
